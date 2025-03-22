@@ -1,0 +1,138 @@
+digraph AutoTubeCPM {
+    // Configuration du graphe
+    rankdir=TB;
+    node [shape=box, style=filled, fillcolor=lightblue, fontname="Arial", fontsize=12];
+    edge [fontname="Arial", fontsize=10];
+    
+    // Définition des nœuds principaux
+    UI [label="Interface Utilisateur\n(Streamlit Dashboard)", fillcolor=lightgreen];
+    Orchestrator [label="Orchestrateur Principal", fillcolor=lightyellow];
+    
+    // Modules fonctionnels
+    NicheDiscovery [label="Module de Découverte\nde Niches", fillcolor=lightpink];
+    ContentGen [label="Module de Génération\nde Contenu", fillcolor=lightpink];
+    TTS [label="Module de\nSynthèse Vocale", fillcolor=lightpink];
+    VideoProduction [label="Module de\nProduction Vidéo", fillcolor=lightpink];
+    YouTubePublish [label="Module de\nPublication YouTube", fillcolor=lightpink];
+    Analytics [label="Module d'Analyse\net Suivi", fillcolor=lightpink];
+    
+    // Sous-composants
+    subgraph cluster_niche {
+        label="Découverte de Niches";
+        style=dotted;
+        TrendCollector [label="Collecteur de\nTendances", shape=ellipse, fillcolor=white];
+        CPMAnalyzer [label="Analyseur CPM", shape=ellipse, fillcolor=white];
+        TopicGenerator [label="Générateur de\nSujets", shape=ellipse, fillcolor=white];
+        NicheDB [label="Base de Données\nde Niches", shape=cylinder, fillcolor=white];
+    }
+    
+    subgraph cluster_content {
+        label="Génération de Contenu";
+        style=dotted;
+        ManusAI [label="Intégration\nManus AI", shape=ellipse, fillcolor=white];
+        SEOOptimizer [label="Optimiseur SEO", shape=ellipse, fillcolor=white];
+        ContentQuality [label="Vérificateur de\nQualité", shape=ellipse, fillcolor=white];
+        Templates [label="Bibliothèque de\nTemplates", shape=cylinder, fillcolor=white];
+    }
+    
+    subgraph cluster_tts {
+        label="Synthèse Vocale";
+        style=dotted;
+        KokoroTTS [label="Intégration\nKokoro TTS", shape=ellipse, fillcolor=white];
+        AudioProcessor [label="Processeur Audio", shape=ellipse, fillcolor=white];
+        VoiceLibrary [label="Bibliothèque\nde Voix", shape=cylinder, fillcolor=white];
+    }
+    
+    subgraph cluster_video {
+        label="Production Vidéo";
+        style=dotted;
+        PexelsAPI [label="Intégration\nPexels API", shape=ellipse, fillcolor=white];
+        StableDiffusion [label="Intégration\nStable Diffusion", shape=ellipse, fillcolor=white];
+        MoviePyEngine [label="Moteur\nMoviePy/FFmpeg", shape=ellipse, fillcolor=white];
+        SubtitleGen [label="Générateur de\nSous-titres", shape=ellipse, fillcolor=white];
+        VisualLibrary [label="Bibliothèque\nVisuelle", shape=cylinder, fillcolor=white];
+    }
+    
+    subgraph cluster_youtube {
+        label="Publication YouTube";
+        style=dotted;
+        YouTubeAPI [label="Intégration\nYouTube API", shape=ellipse, fillcolor=white];
+        AuthManager [label="Gestionnaire\nd'Authentification", shape=ellipse, fillcolor=white];
+        Scheduler [label="Planificateur de\nPublications", shape=ellipse, fillcolor=white];
+        ThumbnailGen [label="Générateur de\nMiniatures", shape=ellipse, fillcolor=white];
+    }
+    
+    subgraph cluster_analytics {
+        label="Analyse et Suivi";
+        style=dotted;
+        AnalyticsAPI [label="Intégration\nYouTube Analytics", shape=ellipse, fillcolor=white];
+        DataEngine [label="Moteur d'Analyse\nde Données", shape=ellipse, fillcolor=white];
+        ReportGen [label="Générateur de\nRapports", shape=ellipse, fillcolor=white];
+        RecommendSystem [label="Système de\nRecommandations", shape=ellipse, fillcolor=white];
+    }
+    
+    // Connexions principales
+    UI -> Orchestrator [label="Commandes"];
+    Orchestrator -> UI [label="Résultats"];
+    
+    Orchestrator -> NicheDiscovery [label="Paramètres\nde recherche"];
+    NicheDiscovery -> Orchestrator [label="Niches\nclassées"];
+    
+    Orchestrator -> ContentGen [label="Sujet, niche"];
+    ContentGen -> Orchestrator [label="Script, titre,\ndescription"];
+    
+    Orchestrator -> TTS [label="Script"];
+    TTS -> Orchestrator [label="Audio"];
+    
+    Orchestrator -> VideoProduction [label="Audio, style"];
+    VideoProduction -> Orchestrator [label="Vidéo"];
+    
+    Orchestrator -> YouTubePublish [label="Vidéo,\nmétadonnées"];
+    YouTubePublish -> Orchestrator [label="Statut de\npublication"];
+    
+    Orchestrator -> Analytics [label="ID vidéo"];
+    Analytics -> Orchestrator [label="Métriques"];
+    
+    // Boucle de rétroaction
+    Analytics -> NicheDiscovery [label="Feedback", style=dashed, color=red];
+    
+    // Connexions internes des sous-composants
+    NicheDiscovery -> TrendCollector;
+    TrendCollector -> CPMAnalyzer;
+    CPMAnalyzer -> TopicGenerator;
+    NicheDB -> NicheDiscovery;
+    
+    ContentGen -> ManusAI;
+    ManusAI -> SEOOptimizer;
+    SEOOptimizer -> ContentQuality;
+    Templates -> ContentGen;
+    
+    TTS -> KokoroTTS;
+    KokoroTTS -> AudioProcessor;
+    VoiceLibrary -> TTS;
+    
+    VideoProduction -> PexelsAPI;
+    VideoProduction -> StableDiffusion;
+    PexelsAPI -> MoviePyEngine;
+    StableDiffusion -> MoviePyEngine;
+    MoviePyEngine -> SubtitleGen;
+    VisualLibrary -> VideoProduction;
+    
+    YouTubePublish -> YouTubeAPI;
+    AuthManager -> YouTubeAPI;
+    YouTubePublish -> Scheduler;
+    YouTubePublish -> ThumbnailGen;
+    
+    Analytics -> AnalyticsAPI;
+    AnalyticsAPI -> DataEngine;
+    DataEngine -> ReportGen;
+    DataEngine -> RecommendSystem;
+    
+    // Intégration Google Colab
+    Colab [label="Google Colab\nEnvironnement", shape=cloud, fillcolor=lightgrey];
+    Colab -> Orchestrator [label="Exécution", style=dashed];
+    
+    // Stockage de données
+    DataStorage [label="Stockage de Données\n(Local/Google Drive)", shape=cylinder, fillcolor=lightgrey];
+    Orchestrator -> DataStorage [dir=both, label="Persistance"];
+}
